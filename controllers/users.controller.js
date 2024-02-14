@@ -13,6 +13,7 @@ exports.createUser = async (req, res) => {
       success: true,
       user,
     });
+
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -21,3 +22,21 @@ exports.createUser = async (req, res) => {
     });
   }
 };
+
+
+exports.deleteUser = async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const user = await User.findByPk(userId);
+        await user.destroy(userId);
+
+        res.status(200).json({
+            success: true
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }   
+}
