@@ -4,6 +4,11 @@ const db = require("./models/db.index");
 const app = express();
 const PORT = 8001;
 
+app.use (express.json());
+
+
+const userRoutes = require("./routes/users.route");
+
 sequelize.authenticate().then(() => {
     console.log("Database Connection Successfull!");
 }).catch(err => {
@@ -17,6 +22,8 @@ db.sequelize.sync({alter : true}).then(() => {
     })
 
     console.log("MY MODELS :", db.sequelize.models);
+
+    app.use('/api/v1/user', userRoutes);
 
 
 app.listen(PORT, () => {
