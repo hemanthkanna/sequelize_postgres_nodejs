@@ -122,3 +122,21 @@ exports.findOneUser = async(req, res) => {
 }
 
 //
+exports.findOrCreateUser = async(req, res) => {
+  try {
+    const user = await User.findOrCreate(
+      {where : {userName : "anbu"}}
+    );
+
+    res.status(200).json({
+      success : true,
+      user
+    })
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message : error.message,
+      stack : error.stack
+    })
+  }
+}
