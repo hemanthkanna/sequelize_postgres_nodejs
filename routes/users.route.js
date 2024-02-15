@@ -1,9 +1,10 @@
 const express = require('express');
-const { createUser, deleteUser, getUsers, getSingleUser, updateUser } = require('../controllers/users.controller');
+const { createUser, deleteUser, getUsers, getSingleUser, updateUser, findOneUser } = require('../controllers/users.controller');
 const router = express.Router();
 
 router.route('/').post(createUser);
 router.route('/').get(getUsers);
+router.route('/findOne/').get(findOneUser);
 router.route('/:id').get(getSingleUser);
 router.route('/:id').put(updateUser);
 router.route('/:id').delete(deleteUser);
