@@ -28,6 +28,12 @@ const User = sequelize.define(
 
     password: {
       type: DataTypes.STRING,
+
+      set (value) {
+        const salt = bcrypt.genSaltSync(12);
+        const hash = bcrypt.hashSync(value, salt);
+        this.setDataValue('password', hash);
+      }
     },
 
     mobileNumber: {
