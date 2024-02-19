@@ -1,6 +1,7 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../config/database");
 const { DataTypes } = Sequelize;
+const bcrypt = require('bcrypt');
 
 const User = sequelize.define(
   "user",
@@ -13,8 +14,19 @@ const User = sequelize.define(
     userName: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        len: [2, 12],
+      },
+      get() {
+        const value = this.getDataValue("userName");
+        return value.toUpperCase();
+      },
     },
     email: {
+      type: DataTypes.STRING,
+    },
+
+    password: {
       type: DataTypes.STRING,
     },
 
@@ -27,6 +39,7 @@ const User = sequelize.define(
       defaultValue: 21,
     },
   },
+
   {
     timestamps: false,
   }
