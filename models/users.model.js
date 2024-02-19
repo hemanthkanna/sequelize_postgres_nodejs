@@ -1,7 +1,8 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../config/database");
 const { DataTypes } = Sequelize;
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
+const zlib = require("zlib");
 
 const User = sequelize.define(
   "user",
@@ -29,11 +30,25 @@ const User = sequelize.define(
     password: {
       type: DataTypes.STRING,
 
-      set (value) {
+      set(value) {
         const salt = bcrypt.genSaltSync(12);
         const hash = bcrypt.hashSync(value, salt);
-        this.setDataValue('password', hash);
-      }
+        this.setDataValue("password", hash);
+      },
+    },
+
+    description: {
+      type: DataTypes.STRING,
+      set(value) {
+        const compressed = zlib.deflateSync(value).toString("base64");
+        this.setDataValue("description", compressed);
+      },
+
+      get() {
+        const value = this.getDataValue("description");
+        const uncompressed = zlib.inflateSync(Buffer.from(value, "base64"));
+        return uncompressed.toString();
+      },
     },
 
     mobileNumber: {
