@@ -25,10 +25,20 @@ const User = sequelize.define(
     },
     email: {
       type: DataTypes.STRING,
-      unique : true,
-      validate : {
-        isEmail : true
-      }
+      unique: true,
+      allowNull : true,
+      validate: {
+        isEmail: true,
+        isIn: {
+          args: ["@gmail.com", "@yahoo.com"],
+          msg: "The provided email must be one of the following...",
+        },
+        myEmailValidator(value) {
+          if (value === null) {
+            throw new Error("Please Enter an Email !");
+          }
+        },
+      },
     },
 
     password: {
@@ -62,25 +72,25 @@ const User = sequelize.define(
     age: {
       type: DataTypes.INTEGER,
       defaultValue: 21,
-      validate : {
+      validate: {
         isOldEnough(value) {
-          if(value < 21) {
-            throw new Error ("Too Young !");
+          if (value < 21) {
+            throw new Error("Too Young !");
           }
-        } ,
+        },
 
-        isNumeric : {
-          msg : "You Must Enter a Number for age"
-        }
-      }
+        isNumeric: {
+          msg: "You Must Enter a Number for age",
+        },
+      },
     },
 
-    aboutUser : {
+    aboutUser: {
       type: DataTypes.VIRTUAL,
       get() {
-        return `${this.userName} , ${this.description}`
-      }
-    }
+        return `${this.userName} , ${this.description}`;
+      },
+    },
   },
 
   {
