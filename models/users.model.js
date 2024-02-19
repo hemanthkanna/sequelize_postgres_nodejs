@@ -59,6 +59,13 @@ const User = sequelize.define(
       type: DataTypes.INTEGER,
       defaultValue: 21,
     },
+
+    aboutUser : {
+      type: DataTypes.VIRTUAL,
+      get() {
+        return `${this.userName} , ${this.description}`
+      }
+    }
   },
 
   {
