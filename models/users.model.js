@@ -26,7 +26,7 @@ const User = sequelize.define(
     email: {
       type: DataTypes.STRING,
       unique: true,
-      allowNull : true,
+      allowNull: true,
       validate: {
         isEmail: true,
         isIn: {
@@ -94,7 +94,10 @@ const User = sequelize.define(
   },
 
   {
-    timestamps: false,
+    // timestamps: false,   // to remove createdAt , updatedAt etc..
+    timestamps: true,
+    paranoid: true, // does not deleted the row completely
+                   //  create a timestamp called deletedAt
   }
 );
 

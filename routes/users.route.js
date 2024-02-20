@@ -8,6 +8,7 @@ const {
   findOneUser,
   findOrCreateUser,
   findAndCountUser,
+  restoreUser,
 } = require("../controllers/users.controller");
 const router = express.Router();
 
@@ -19,5 +20,6 @@ router.route("/findAndCount").get(findAndCountUser);
 router.route("/:id").get(getSingleUser);
 router.route("/:id").put(updateUser);
 router.route("/:id").delete(deleteUser);
+router.route("/restore/:id").post(restoreUser);
 
 module.exports = router;

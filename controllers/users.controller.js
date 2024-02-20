@@ -27,7 +27,9 @@ exports.createUser = async (req, res) => {
 
 exports.getUsers = async (req, res) => {
   try {
-    const users = await User.findAll({ attributes: ["userId", "userName", "email"] });
+    const users = await User.findAll({
+      attributes: ["userId", "userName", "email"],
+    });
 
     res.status(200).json({
       success: true,
@@ -155,6 +157,28 @@ exports.findAndCountUser = async (req, res) => {
     res.status(500).json({
       success: false,
       error: error.message,
+    });
+  }
+};
+
+exports.restoreUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const user = await User.restore({
+      where: {
+        userId: userId,
+      },
+    });
+
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+      stack: error.stack,
     });
   }
 };
