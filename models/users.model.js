@@ -3,6 +3,7 @@ const sequelize = require("../config/database");
 const { DataTypes } = Sequelize;
 const bcrypt = require("bcrypt");
 const zlib = require("zlib");
+const AuditLog = require("./auditLog.model");
 
 const User = sequelize.define(
   "user",
@@ -98,7 +99,25 @@ const User = sequelize.define(
     timestamps: true,
     paranoid: true, // does not deleted the row completely
                    //  create a timestamp called deletedAt
+    // hooks : {
+    //   beforeCreate: (user, options) => {
+    //     user._previousDataValues = null; 
+    //   },
+    //   beforeUpdate: (user, options) => {
+    //     user._previousDataValues = { ...user.dataValues };
+    //   },
+    //   afterCreate: (user, options) => {
+    //     createAuditLog(user, 'create', null, user);
+    //   },
+    //   afterUpdate: (user, options) => {
+    //     createAuditLog(user, 'update', user._previousDataValues, user.dataValues);
+    //   },
+    //   afterDestroy: (user, options) => {
+    //     createAuditLog(user, 'delete', user, null)
+    //   }
+    // }
   }
 );
+
 
 module.exports = User;
